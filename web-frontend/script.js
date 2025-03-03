@@ -4,6 +4,11 @@ function submitLink() {
     const linkInput = document.getElementById('videoLink').value;
     const videoContainer = document.getElementById('videoContainer');
     const saveButton = document.getElementById('saveButton');
+    const spinner = document.getElementById('spinner');
+
+    // Show the spinner
+    spinner.style.display = 'block';
+    videoContainer.innerHTML = '';
 
     fetch(`http://localhost:3000/download?url=${encodeURIComponent(linkInput)}`)
         .then(response => {
@@ -20,6 +25,10 @@ function submitLink() {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
             saveButton.style.display = 'none'; // Hide the save button if there's an error
+        })
+        .finally(() => {
+            // Hide the spinner
+            spinner.style.display = 'none';
         });
 }
 
