@@ -1,5 +1,8 @@
 console.log('Script loaded');
 
+const isLocalhost = window.location.hostname === 'localhost';
+const baseURL = isLocalhost ? 'http://localhost:3000' : 'http://your-server-ip:3000';
+
 function submitLink() {
     const linkInput = document.getElementById('videoLink').value;
     const videoContainer = document.getElementById('videoContainer');
@@ -10,7 +13,7 @@ function submitLink() {
     spinner.style.display = 'block';
     videoContainer.innerHTML = '';
 
-    fetch(`http://localhost:3000/download?url=${encodeURIComponent(linkInput)}`)
+    fetch(`${baseURL}/download?url=${encodeURIComponent(linkInput)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -35,7 +38,7 @@ function submitLink() {
 function downloadVideo() {
     const linkInput = document.getElementById('videoLink').value;
 
-    fetch(`http://localhost:3000/download?url=${encodeURIComponent(linkInput)}`)
+    fetch(`${baseURL}/download?url=${encodeURIComponent(linkInput)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -56,8 +59,19 @@ function downloadVideo() {
         });
 }
 
+function pasteFromClipboard() {
+    navigator.clipboard.readText()
+        .then(text => {
+            document.getElementById('videoLink').value = text;
+        })
+        .catch(err => {
+            console.error('Failed to read clipboard contents: ', err);
+        });
+}
+
 document.getElementById('submitButton').addEventListener('click', submitLink);
 document.getElementById('saveButton').addEventListener('click', downloadVideo);
+document.getElementById('pasteButton').addEventListener('click', pasteFromClipboard);
 
 // Initially hide the save button
 document.getElementById('saveButton').style.display = 'none';
