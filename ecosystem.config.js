@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'dl-frontend',
-            script: 'web-frontend/server.js', // Replace with the entry point of your application
+            script: 'server.js', // Replace with the entry point of your application
             instances: 1, // Run a single instance
             exec_mode: 'fork', // Use 'fork' for single instance
             watch: false, // Watch for file changes and restart
